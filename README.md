@@ -8,27 +8,31 @@ Similarly the promo_functions.py file was written as a separate module for exten
 
 System Requirements
 -------------------
-This program was written and tested on Python 2.7.6 and is supported for the 2.7.x releases.
+This program was written and tested on Python 2.7.6 and 2.7.8 and is supported for the 2.7.x releases.
 
-It was tested on a mac (OS X Yosemite Beta 10.10) and windows 7 platforms.
+It was tested on a Mac (OS X Yosemite Beta 10.10) and Windows 7 platforms.
 
 Usage
 -----
 The program can be run in interactive mode:
+
 $ python produce.py
 
 or with a test file - I've provided a sample test file:
+
 $ python produce.py < sample_test.txt 
 
 Expected Input
 --------------
-The program accepts any of the known fruits** as input as well as 'help'.
+The program accepts any of the available fruits** as input as well as 'help'.
 
 Return indicates the list is done and the receipt is printed. Similarly when data is streamed from the data file EOF (or return) indicates the end of the grocery list and the receipt is printed.
 
 Any unknown produce is ignored.
 
-**known fruits means all the fruits found in the inventory.xml file
+**available fruits means all the fruits found in the inventory.xml file
+
+'help' will list out the available promotions and available fruits
 
 Misc Notes
 ----------

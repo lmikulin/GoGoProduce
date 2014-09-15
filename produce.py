@@ -61,7 +61,6 @@ def populatePromoDict():
 				promo = Promo(item, nth_int_val, name_val, discount_float_val, func_val)
 				#print "PROMO: %s %d %s %f %s" % (promo.item, promo.nth, promo.name, promo.save, promo.func)
 				promo_dict[item].append(promo)
-	#print promo_dict
 
 def getRegularCostOfItem(item):
 	price_node = inventory.find("./item[@name='%s']/price" % item)
@@ -87,12 +86,13 @@ def getPriceAndPromoTuple(item, nth):
 		
 def printReceipt(purchase):
 	total = 0
-	print '{:<20}'.format('Purchase'), '{:>8}'.format('Price'), '{:>8}'.format('Total'), "Promotion"
-	print '-'*20, '{:>8}'.format('-'*5), '{:>8}'.format('-'*5), '-'*9
+	print '\n'
+	print '{:<20}'.format('Purchase'), '{:>8}'.format('Price'), '{:>8}'.format('Total'), ' '*3, "Promotion"
+	print '-'*20, '{:>8}'.format('-'*5), '{:>8}'.format('-'*5), ' '*3, '-'*9
 	# tuple has (item name, item cost, item promo)
 	for tuple in purchase:
 		total += tuple[1]
-		print '{:.<20}'.format(tuple[0]), '{:>8}'.format('{:.2f}'.format(tuple[1])), '{:>8}'.format('{:.2f}'.format(total)), tuple[2]
+		print '{:.<20}'.format(tuple[0]), '{:>8}'.format('{:.2f}'.format(tuple[1])), '{:>8}'.format('{:.2f}'.format(total)), ' '*3, tuple[2]
 	
 	print "\nTotal: $", '{0:.2f}'.format(total)
         
@@ -149,7 +149,7 @@ label = "Inventory"
 print "\n%s\n" % label, '-'*len(label)
 for item in item_names:
 	print "-> ", item
-print "Enter any other value to complete your transaction and print a receipt!"
+print "Enter any other value to complete your transaction and print a receipt!\n"
 
 purchased = []
 
@@ -177,7 +177,7 @@ while True:
 		#print "price and promo ", tuple[0], " num bought: ", num_bought, " ", tuple[1]
 		total += tuple[0]
 		purchased.append((fruit, tuple[0], tuple[1]))
-		print '{:<20}'.format(fruit), '{:>8}'.format('{:.2f}'.format(tuple[0])), '{:>8}'.format('{:.2f}'.format(total)), tuple[1]
+		print '{:<10}'.format(fruit), '{:>8}'.format('{:.2f}'.format(tuple[0])), '{:>8}'.format('{:.2f}'.format(total)),' '*3, tuple[1]
 		
 	else:
 		break

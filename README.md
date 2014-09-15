@@ -2,9 +2,7 @@ GoGoProduce
 ===========
 This is a console Python based grocery store checkout system.
 
-The "produce" and "promotions" information is pulled from the inventory.xml file.
-
-This was written as a data file to have it separated from the program and in anticipation that it will change frequently.
+The "produce" and "promotions" information is pulled from the inventory.xml file. This was written as a data file to have it separated from the program and in anticipation that it will change frequently.
 
 Similarly the promo_functions.py file was written as a separate module for extensibility since different types of promotions may come up.
 

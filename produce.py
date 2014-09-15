@@ -142,14 +142,15 @@ num_items = len(item_names)
 
 promo_dict = {}
 populatePromoDict()
-printDailyDeals()
 
-# print the inventory choices list
-label = "Inventory"
-print "\n%s\n" % label, '-'*len(label)
-for item in item_names:
-	print "-> ", item
-print "Enter any other value to complete your transaction and print a receipt!\n"
+def printHelp():
+	printDailyDeals()
+	# print the inventory choices list
+	label = "Inventory"
+	print "\n%s\n" % label, '-'*len(label)
+	for item in item_names:
+		print "-> ", item
+	print "Enter return to complete your transaction and print a receipt!\n"
 
 purchased = []
 
@@ -160,7 +161,7 @@ totals_for_items = {}
 
 while True:
 	try:
-		fruit = raw_input(">> ")
+		fruit = raw_input()
 	except:
 		break
 
@@ -174,13 +175,16 @@ while True:
 
 		# expecting (price, promo text)
 		tuple = getPriceAndPromoTuple(fruit, num_bought)
-		#print "price and promo ", tuple[0], " num bought: ", num_bought, " ", tuple[1]
 		total += tuple[0]
 		purchased.append((fruit, tuple[0], tuple[1]))
-		print '{:<10}'.format(fruit), '{:>8}'.format('{:.2f}'.format(tuple[0])), '{:>8}'.format('{:.2f}'.format(total)),' '*3, tuple[1]
-		
+		# print '{:<10}'.format(fruit), '{:>8}'.format('{:.2f}'.format(tuple[0])), '{:>8}'.format('{:.2f}'.format(total)),' '*3, tuple[1]
+	elif (fruit == "help"):
+		printHelp()
+	elif (len(fruit) == 0):
+		break		
 	else:
-		break
+		# invalid produce, ignore
+		pass
 
 # print the receipt
 printReceipt(purchased)

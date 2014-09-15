@@ -4,6 +4,7 @@
     <price>1.2</price>
     <promo>
 	    <nth>2</nth>
+	    <name>Buy one apple get one free</name>
     	<discount>0</discount>
     	<func>buyNGetOneFree</func>
     </promo>
@@ -12,6 +13,7 @@
     <price>1.8</price>
     <promo>
 	    <nth>5</nth>
+	    <name>Buy 4 pears get the 5th free</name>
 	    <discount>0</discount>
 	    <func>buyNGetOneFree</func>
 	</promo>
@@ -26,6 +28,7 @@
     <price>2.5</price>
     <promo>
     	<nth>2</nth>
+    	<name>Get 50 cents off two pineapples</name>
     	<discount>0.5</discount>
 	    <func></func>
    	</promo>

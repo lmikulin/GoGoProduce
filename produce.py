@@ -2,8 +2,12 @@ import promo_functions
 import xml.etree.ElementTree as Tree
 
 #read the inventory data file
-tree = Tree.parse('inventory.xml')
-inventory = tree.getroot()
+try:
+	tree = Tree.parse('inventory.xml')
+	inventory = tree.getroot()
+except:
+	print "Error parsing the inventory.xml data file - exiting program"
+	exit()
 
 def populatePromoDict():
 	global promo_dict
@@ -13,8 +17,51 @@ def populatePromoDict():
 		if (len(promo_nodes) > 0):
 			promo_dict[item] = []
 			for node in promo_nodes:
-				pass
-	
+				nth = node.find('./nth')
+				name = node.find('./name')
+				discount = node.find('./discount')
+				func = node.find('./func')
+				# nth and (discount or func) are required - name is optional
+				if (nth == None):
+					continue
+				else:
+					nth_val = nth.text
+					try:
+						nth_int_val = int(nth_val)
+					except:
+						continue
+				if (name == None):
+					name_val = "Promotion Discount"
+				else:
+					name_val = name.text
+					
+				# keep track of either discount of func True
+				have_a_promo = False
+				if (discount != None):
+					discount_val = discount.text
+					try:
+						discount_float_val = float(discount_val)
+						have_a_promo = True
+					except:
+						discount_float_val = 0
+				if (func != None):
+					try:
+						func_val = eval("promo_functions.%s" % func.text)
+						have_a_promo = True
+					except:
+						func_val = None
+				else:
+					func_val = None
+				
+				# don't actually have any kind of promotion - skip this node
+				if (not have_a_promo):
+					continue
+				
+				# we should have all legit values to create a Promo instance
+				promo = Promo(item, nth_int_val, name_val, discount_float_val, func_val)
+				#print "PROMO: %s %d %s %f %s" % (promo.item, promo.nth, promo.name, promo.save, promo.func)
+				promo_dict[item].append(promo)
+	#print promo_dict
 
 def getRegularCostOfItem(item):
 	price_node = inventory.find("./item[@name='%s']/price" % item)
@@ -77,11 +124,14 @@ class Promo:
 					pass
 		return discount
 
-promo_dict = {
-	"plum": [Promo("plum", 3, "Buy TWO Get one 1/2 off", 0, promo_functions.buyNGetOneHalfOff)],
-	"pear": [],
-	"apple": [Promo("apple", 4, "Buy three getone Free!", 0, promo_functions.buyNGetOneFree)], 
-	"mango": [Promo("mango", 2, "Save 40c on two", 0.4, None)] }
+#used for debugging	
+def printDailyDeals():
+	global promo_dict
+	label = "Today's Promotions:"
+	print "%s\n" % label, '-'*len(label)
+	for item, list in promo_dict.iteritems():
+		for promo in list:
+			print "%s: %s" % (promo.item, promo.name)
 
 # make a list of the produce inventory item names
 item_names = []
@@ -90,30 +140,31 @@ for node in nodes:
 	item_names.append( node.attrib['name'])
 num_items = len(item_names)
 
+promo_dict = {}
+populatePromoDict()
+printDailyDeals()
+
 # print the inventory choices list
-for index, item in enumerate(item_names):
-	print index, ": ", item
-print "Press any other key to complete your transaction"
+label = "Inventory"
+print "\n%s\n" % label, '-'*len(label)
+for item in item_names:
+	print "-> ", item
+print "Enter any other value to complete your transaction and print a receipt!"
 
 purchased = []
-session = True
 
 # total spent
 total = 0
 # number of items purchased indexed by item
 totals_for_items = {}
 
-while session:
-	# get user's choice
-	user_input = raw_input(">> ")
-
+while True:
 	try:
-		choice = int(user_input)
-	except ValueError:
-		choice = -1
-	
-	if (choice < num_items and choice >= 0):
-		fruit = item_names[choice]
+		fruit = raw_input(">> ")
+	except:
+		break
+
+	if (fruit in item_names):
 		# keep track of the number of each item bought
 		if (not fruit in totals_for_items):
 			totals_for_items[fruit] = 0
@@ -129,10 +180,7 @@ while session:
 		print '{:<20}'.format(fruit), '{:>8}'.format('{:.2f}'.format(tuple[0])), '{:>8}'.format('{:.2f}'.format(total)), tuple[1]
 		
 	else:
-		print "Would you like to pay for your items [y/n]"
-		user_input = raw_input()
-		if (user_input == "y" or user_input == "Y"):
-			session = False
+		break
 
 # print the receipt
 printReceipt(purchased)

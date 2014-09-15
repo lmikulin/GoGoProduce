@@ -3,14 +3,18 @@ pear
 pineapple
 apple
 apple
+peach
 pineapple
 plum
 pear
+billybob
 banana
 kiwi
+help
 apple
 mango
 pear
+Dammit Jim, I'm a veggie not a FRUIT!
 pineapple
 banana
 pear
